@@ -19,7 +19,6 @@ const login = async (req, res) => {
       return res.redirect('/auth/login?error=Invalid email or password');
     }
 
-    // Manual login using Passport
     req.login(member, err => {
       if (err) {
         return res.redirect('/auth/login?error=Login failed');

@@ -1,6 +1,5 @@
 const Perfume = require('../models/perfume');
 
-// POST add comment/feedback to perfume (Authenticated members only)
 const addComment = async (req, res) => {
   try {
     const { rating, content } = req.body;
@@ -12,7 +11,6 @@ const addComment = async (req, res) => {
       return res.status(404).json({ message: 'Perfume not found' });
     }
 
-    // Check if member already commented on this perfume
     const existingComment = perfume.comments.find(
       comment => comment.author.toString() === memberId.toString()
     );
@@ -23,7 +21,6 @@ const addComment = async (req, res) => {
         .json({ message: 'You have already commented on this perfume' });
     }
 
-    // Add new comment
     perfume.comments.push({
       rating,
       content,
@@ -42,7 +39,6 @@ const addComment = async (req, res) => {
   }
 };
 
-// PUT update own comment (Member can only update their own comment)
 const updateComment = async (req, res) => {
   try {
     const { rating, content } = req.body;
@@ -59,7 +55,6 @@ const updateComment = async (req, res) => {
       return res.status(404).json({ message: 'Comment not found' });
     }
 
-    // Check if the comment belongs to the current user
     if (comment.author.toString() !== memberId.toString()) {
       return res
         .status(403)
@@ -81,7 +76,6 @@ const updateComment = async (req, res) => {
   }
 };
 
-// DELETE own comment (Member can only delete their own comment)
 const deleteComment = async (req, res) => {
   try {
     const { perfumeId, commentId } = req.params;
@@ -97,7 +91,6 @@ const deleteComment = async (req, res) => {
       return res.status(404).json({ message: 'Comment not found' });
     }
 
-    // Check if the comment belongs to the current user
     if (comment.author.toString() !== memberId.toString()) {
       return res
         .status(403)

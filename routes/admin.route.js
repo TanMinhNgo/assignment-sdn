@@ -1,31 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/admin.controller');
+const perfumeController = require('../controllers/perfume.controller');
+const brandController = require('../controllers/brand.controller');
 const { isAdmin } = require('../middleware/auth');
 
-// All routes require admin authentication
 router.use(isAdmin);
 
-// Dashboard
 router.get('/dashboard', adminController.getDashboard);
 
-// Perfume management
-router.get('/perfumes', adminController.getPerfumes);
-router.get('/perfumes/new', adminController.getNewPerfumeForm);
-router.post('/perfumes', adminController.createPerfume);
-router.get('/perfumes/:id/edit', adminController.getEditPerfumeForm);
-router.put('/perfumes/:id', adminController.updatePerfume);
-router.delete('/perfumes/:id', adminController.deletePerfume);
+router.get('/perfumes', perfumeController.getPerfumes);
+router.get('/perfumes/new', perfumeController.getNewPerfumeForm);
+router.post('/perfumes', perfumeController.createPerfume);
+router.get('/perfumes/:id/edit', perfumeController.getEditPerfumeForm);
+router.put('/perfumes/:id', perfumeController.updatePerfume);
+router.delete('/perfumes/:id', perfumeController.deletePerfume);
 
-// Brand management
-router.get('/brands', adminController.getBrands);
-router.get('/brands/new', adminController.getNewBrandForm);
-router.post('/brands', adminController.createBrand);
-router.get('/brands/:id/edit', adminController.getEditBrandForm);
-router.put('/brands/:id', adminController.updateBrand);
-router.delete('/brands/:id', adminController.deleteBrand);
+router.get('/brands', brandController.getBrands);
+router.get('/brands/new', brandController.getNewBrandForm);
+router.post('/brands', brandController.createBrand);
+router.get('/brands/:id/edit', brandController.getEditBrandForm);
+router.put('/brands/:id', brandController.updateBrand);
+router.delete('/brands/:id', brandController.deleteBrand);
 
-// Member management
 router.get('/members', adminController.getMembers);
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const Member = require('../models/member');
 
-// Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
@@ -8,7 +7,6 @@ const isAuthenticated = (req, res, next) => {
   return res.status(401).json({ message: 'Authentication required' });
 };
 
-// Middleware to check if user is Admin
 const isAdmin = (req, res, next) => {
   if (req.isAuthenticated() && req.user.isAdmin) {
     return next();
@@ -16,7 +14,6 @@ const isAdmin = (req, res, next) => {
   return res.status(403).json({ message: 'Admin access required' });
 };
 
-// Middleware to check if user can only edit their own information
 const isSelfOrAdmin = (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ message: 'Authentication required' });

@@ -96,7 +96,6 @@ const changePassword = async (req, res) => {
       return res.status(404).json({ message: 'Member not found' });
     }
 
-    // Verify old password
     const isMatch = await bcrypt.compare(oldPassword, member.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Current password is incorrect' });

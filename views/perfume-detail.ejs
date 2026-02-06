@@ -8,7 +8,6 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">🌸 Perfume Collection</a>
@@ -48,7 +47,6 @@
     <div class="container my-4">
       <a href="/" class="btn btn-outline-secondary mb-3">&larr; Back to Collection</a>
 
-      <!-- Perfume Details -->
       <div class="row mb-4">
         <div class="col-md-5">
           <img src="<%= perfume.uri %>" alt="<%= perfume.perfumeName %>" class="img-fluid rounded shadow" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
@@ -82,7 +80,6 @@
 
       </div>
 
-      <!-- Comments Section -->
       <div class="card shadow-sm">
         <div class="card-body">
           <h2 class="card-title mb-4">Reviews & Ratings (<%= perfume.comments.length %>)</h2>

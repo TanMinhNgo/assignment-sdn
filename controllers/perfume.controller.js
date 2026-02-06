@@ -1,46 +1,30 @@
 const Perfume = require('../models/perfume');
 const Brand = require('../models/brand');
 
-const getAllPerfumes = async (req, res) => {
+const getPerfumes = async (req, res) => {
   try {
-    const { search, brand } = req.query;
-    let query = {};
-
-    if (search) {
-      query.perfumeName = { $regex: search, $options: 'i' };
-    }
-
-    if (brand) {
-      const brandDoc = await Brand.findOne({
-        brandName: { $regex: brand, $options: 'i' },
-      });
-      if (brandDoc) {
-        query.brand = brandDoc._id;
-      }
-    }
-
-    const perfumes = await Perfume.find(query)
+    const perfumes = await Perfume.find()
       .populate('brand', 'brandName')
-      .populate('comments.author', 'membername')
       .sort({ createdAt: -1 });
 
-    res.json(perfumes);
+    res.render('admin/perfumes', {
+      perfumes,
+      user: req.user,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const getPerfumeById = async (req, res) => {
+const getNewPerfumeForm = async (req, res) => {
   try {
-    const perfume = await Perfume.findById(req.params.perfumeId)
-      .populate('brand', 'brandName')
-      .populate('comments.author', 'membername email');
+    const brands = await Brand.find().sort({ brandName: 1 });
 
-    if (!perfume) {
-      return res.status(404).json({ message: 'Perfume not found' });
-    }
-
-    res.json(perfume);
+    res.render('admin/perfume-form', {
+      perfume: null,
+      brands,
+      user: req.user,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -60,10 +44,9 @@ const createPerfume = async (req, res) => {
       brand,
     } = req.body;
 
-    // Validate brand exists
     const brandDoc = await Brand.findById(brand);
     if (!brandDoc) {
-      return res.status(400).json({ message: 'Invalid brand ID' });
+      return res.status(400).send('Invalid brand selected');
     }
 
     const perfume = new Perfume({
@@ -79,64 +62,96 @@ const createPerfume = async (req, res) => {
       comments: [],
     });
 
-    const savedPerfume = await perfume.save();
-    const populatedPerfume = await Perfume.findById(savedPerfume._id).populate(
-      'brand',
-      'brandName'
-    );
-
-    res.status(201).json(populatedPerfume);
+    await perfume.save();
+    res.redirect('/admin/perfumes');
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send('Error creating perfume: ' + error.message);
+  }
+};
+
+const getEditPerfumeForm = async (req, res) => {
+  try {
+    const perfume = await Perfume.findById(req.params.id).populate('brand');
+    if (!perfume) {
+      return res.status(404).send('Perfume not found');
+    }
+
+    const brands = await Brand.find().sort({ brandName: 1 });
+
+    res.render('admin/perfume-form', {
+      perfume,
+      brands,
+      user: req.user,
+    });
+  } catch (error) {
+    res.status(500).send('Error loading perfume: ' + error.message);
   }
 };
 
 const updatePerfume = async (req, res) => {
   try {
-    const { brand, ...updateData } = req.body;
+    const {
+      perfumeName,
+      uri,
+      price,
+      concentration,
+      description,
+      ingredients,
+      volume,
+      targetAudience,
+      brand,
+    } = req.body;
 
-    if (brand) {
-      const brandDoc = await Brand.findById(brand);
-      if (!brandDoc) {
-        return res.status(400).json({ message: 'Invalid brand ID' });
-      }
-      updateData.brand = brand;
+    const brandDoc = await Brand.findById(brand);
+    if (!brandDoc) {
+      return res.status(400).send('Invalid brand selected');
     }
 
     const perfume = await Perfume.findByIdAndUpdate(
-      req.params.perfumeId,
-      updateData,
+      req.params.id,
+      {
+        perfumeName,
+        uri,
+        price,
+        concentration,
+        description,
+        ingredients,
+        volume,
+        targetAudience,
+        brand,
+      },
       { new: true, runValidators: true }
-    ).populate('brand', 'brandName');
+    );
 
     if (!perfume) {
-      return res.status(404).json({ message: 'Perfume not found' });
+      return res.status(404).send('Perfume not found');
     }
 
-    res.json(perfume);
+    res.redirect('/admin/perfumes');
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).send('Error updating perfume: ' + error.message);
   }
 };
 
 const deletePerfume = async (req, res) => {
   try {
-    const perfume = await Perfume.findByIdAndDelete(req.params.perfumeId);
+    const perfume = await Perfume.findByIdAndDelete(req.params.id);
 
     if (!perfume) {
       return res.status(404).json({ message: 'Perfume not found' });
     }
 
-    res.json({ message: 'Perfume deleted successfully' });
+    res.status(200).json({ message: 'Perfume deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 module.exports = {
-  getAllPerfumes,
-  getPerfumeById,
+  getPerfumes,
+  getNewPerfumeForm,
   createPerfume,
+  getEditPerfumeForm,
   updatePerfume,
   deletePerfume,
 };
