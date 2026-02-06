@@ -1,12 +1,10 @@
 const Member = require('../models/member');
 const bcrypt = require('bcrypt');
 
-// GET login page
 const getLoginPage = (req, res) => {
   res.render('login', { error: req.query.error });
 };
 
-// POST login
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -26,19 +24,17 @@ const login = async (req, res) => {
       if (err) {
         return res.redirect('/auth/login?error=Login failed');
       }
-      return res.redirect('/auth/profile');
+      return res.redirect('/');
     });
   } catch (error) {
     res.redirect('/auth/login?error=Server error');
   }
 };
 
-// GET register page
 const getRegisterPage = (req, res) => {
   res.render('register', { error: req.query.error });
 };
 
-// POST register
 const register = async (req, res) => {
   try {
     const { membername, email, password } = req.body;
@@ -58,7 +54,6 @@ const register = async (req, res) => {
 
     await member.save();
 
-    // Auto login after registration
     req.login(member, err => {
       if (err) {
         return res.redirect('/auth/login');
@@ -70,12 +65,10 @@ const register = async (req, res) => {
   }
 };
 
-// GET profile page
 const getProfile = (req, res) => {
   res.render('profile', { user: req.user });
 };
 
-// GET logout
 const logout = (req, res) => {
   req.logout(() => {
     res.redirect('/');

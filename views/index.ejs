@@ -48,10 +48,15 @@
     <!-- Main Content -->
     <div class="container my-4">
       <!-- Hero Section -->
-      <div class="p-5 mb-4 bg-gradient text-white rounded-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <div class="container-fluid py-5 text-center">
-          <h1 class="display-4 fw-bold"><%= title %></h1>
-          <p class="fs-4">Discover the finest fragrances from luxury brands</p>
+      <div class="p-5 mb-4 bg-primary bg-gradient text-white rounded-3 text-center">
+        <div class="container-fluid py-5">
+          <h1 class="display-4 fw-bold">🌸 <%= title %></h1>
+          <p class="fs-4 mb-4">Discover the finest fragrances from luxury brands</p>
+          <div class="d-flex gap-3 justify-content-center">
+            <% if (!user) { %>
+              <a href="/auth/register" class="btn btn-outline-light btn-lg">Get Started</a>
+            <% } %>
+          </div>
         </div>
       </div>
 
