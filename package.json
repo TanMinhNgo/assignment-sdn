@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "seed": "node seed.js",
     "format": "prettier --write .",
     "check-format": "prettier --check ."
   },
@@ -18,8 +19,11 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.3",
+    "method-override": "^3.0.0",
     "mongoose": "^9.1.5",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11",

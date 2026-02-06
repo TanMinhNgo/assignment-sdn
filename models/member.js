@@ -4,6 +4,7 @@ const memberSchema = new mongoose.Schema(
   {
     membername: { type: String, require: true },
     password: { type: String, require: true },
+    email: { type: String, require: true, unique: true },
     isAdmin: { type: Boolean, default: false },
   },
   { timestamps: true }

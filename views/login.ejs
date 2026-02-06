@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Perfume Collection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body class="bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-5">
+          <div class="card shadow-sm mt-5">
+            <div class="card-body p-4">
+              <h1 class="text-center mb-4">Login</h1>
+              
+              <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert alert-danger" role="alert">
+                  <%= error %>
+                </div>
+              <% } %>
+
+              <form method="POST" action="/auth/login">
+                <div class="mb-3">
+                  <label for="email" class="form-label fw-bold">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="password" class="form-label fw-bold">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+              </form>
+
+              <div class="text-center my-3 text-muted">
+                <span>- OR -</span>
+              </div>
+
+              <a href="/auth/google" class="btn btn-danger w-100">
+                🔐 Login with Google
+              </a>
+
+              <p class="text-center mt-3 mb-0">
+                Don't have an account? <a href="/auth/register">Register here</a>
+              </p>
+
+              <p class="text-center mt-2">
+                <a href="/">Back to Home</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz4YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  </body>
+</html>

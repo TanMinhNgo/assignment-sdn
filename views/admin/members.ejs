@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/admin/dashboard">Admin Panel</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/perfumes">Perfumes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/brands">Brands</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/members">Members</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Back to Site</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/auth/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item active">Members</li>
+            </ol>
+        </nav>
+
+        <h1 class="mb-4">Member Management</h1>
+
+        <!-- Stats -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-info shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title">Total Members</h6>
+                        <p class="h3 mb-0"><%= members.length %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-warning shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title">Admins</h6>
+                        <p class="h3 mb-0"><%= members.filter(m => m.isAdmin).length %></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-secondary shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title">Regular Members</h6>
+                        <p class="h3 mb-0"><%= members.filter(m => !m.isAdmin).length %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% members.forEach(member => { %>
+                                <tr>
+                                    <td>
+                                        <div class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                             style="width: 40px; height: 40px; font-weight: bold;">
+                                            <%= member.membername.charAt(0).toUpperCase() %>
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold"><%= member.membername %></td>
+                                    <td><%= member.email %></td>
+                                    <td>
+                                        <% if (member.isAdmin) { %>
+                                            <span class="badge bg-warning text-dark">Admin</span>
+                                        <% } else { %>
+                                            <span class="badge bg-secondary">Member</span>
+                                        <% } %>
+                                    </td>
+                                    <td><%= new Date(member.createdAt).toLocaleDateString() %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz4YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

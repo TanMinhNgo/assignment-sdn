@@ -1,12 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Error</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - <%= error.status || '500' %></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <body>
-    <h1><%= message %></h1>
-    <h2><%= error.status %></h2>
-    <pre><%= error.stack %></pre>
+  <body class="bg-light">
+    <div class="container my-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow">
+            <div class="card-body text-center">
+              <div class="mb-4">
+                <span class="display-1 text-danger">⚠️</span>
+              </div>
+              <h1 class="card-title mb-3">Oops! Something went wrong</h1>
+              <h2 class="text-muted mb-4">Error <%= error.status %></h2>
+              <p class="lead"><%= message %></p>
+              
+              <% if (process.env.NODE_ENV !== 'production') { %>
+                <div class="mt-4">
+                  <details class="text-start">
+                    <summary class="btn btn-outline-secondary mb-2">View Error Details</summary>
+                    <pre class="bg-dark text-white p-3 rounded mt-2"><%= error.stack %></pre>
+                  </details>
+                </div>
+              <% } %>
+              
+              <div class="mt-4">
+                <a href="/" class="btn btn-primary">Go Back Home</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz4YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   </body>
 </html>

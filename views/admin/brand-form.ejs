@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= brand ? 'Edit' : 'Add' %> Brand - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/admin/dashboard">Admin Panel</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/perfumes">Perfumes</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/admin/brands">Brands</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/members">Members</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Back to Site</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/auth/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/admin/dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/admin/brands">Brands</a></li>
+                <li class="breadcrumb-item active"><%= brand ? 'Edit' : 'Add New' %></li>
+            </ol>
+        </nav>
+
+        <!-- Form -->
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white">
+                        <h2 class="mb-0"><%= brand ? 'Edit Brand' : 'Add New Brand' %></h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="<%= brand ? `/admin/brands/${brand._id}?_method=PUT` : '/admin/brands' %>" method="POST">
+                            <!-- Brand Name -->
+                            <div class="mb-3">
+                                <label for="brandName" class="form-label fw-bold">Brand Name</label>
+                                <input 
+                                    type="text" 
+                                    id="brandName"
+                                    name="brandName" 
+                                    value="<%= brand ? brand.brandName : '' %>" 
+                                    placeholder="Enter brand name" 
+                                    class="form-control" 
+                                    required
+                                />
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <a href="/admin/brands" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-success">
+                                    <%= brand ? 'Update' : 'Create' %> Brand
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz4YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

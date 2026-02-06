@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Perfume Collection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">🌸 Perfume Collection</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/auth/profile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/auth/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <!-- Profile Header -->
+          <div class="card shadow-sm mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="card-body text-white text-center py-4">
+              <h1 class="mb-2">Welcome, <%= user.membername %>!</h1>
+              <p class="mb-2"><%= user.email %></p>
+              <% if (user.isAdmin) { %>
+                <span class="badge bg-warning text-dark">★ Admin</span>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Update Profile Section -->
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h2 class="card-title mb-4">Update Profile Information</h2>
+              <form action="/members/<%= user._id %>?_method=PUT" method="POST">
+                <div class="mb-3">
+                  <label for="membername" class="form-label fw-bold">Username</label>
+                  <input type="text" class="form-control" id="membername" name="membername" value="<%= user.membername %>" required>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="email" class="form-label fw-bold">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Change Password Section -->
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h2 class="card-title mb-4">Change Password</h2>
+              <form action="/members/<%= user._id %>/password?_method=PUT" method="POST">
+                <div class="mb-3">
+                  <label for="oldPassword" class="form-label fw-bold">Current Password</label>
+                  <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="newPassword" class="form-label fw-bold">New Password</label>
+                  <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="6">
+                </div>
+                
+                <div class="mb-3">
+                  <label for="confirmNewPassword" class="form-label fw-bold">Confirm New Password</label>
+                  <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required minlength="6">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Change Password</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Admin Panel Section -->
+          <% if (user.isAdmin) { %>
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h2 class="card-title mb-3">Admin Panel</h2>
+                <p>As an admin, you have access to:</p>
+                <ul>
+                  <li>Create, Update, Delete Brands</li>
+                  <li>Create, Update, Delete Perfumes</li>
+                  <li>View all registered members</li>
+                </ul>
+                <a href="/collectors" class="btn btn-success">View All Members</a>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+          const newPassword = document.getElementById('newPassword');
+          const confirmNewPassword = document.getElementById('confirmNewPassword');
+          
+          if (newPassword && confirmNewPassword) {
+            if (newPassword.value !== confirmNewPassword.value) {
+              e.preventDefault();
+              alert('New passwords do not match!');
+            }
+          }
+        });
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz4YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  </body>
+</html>
